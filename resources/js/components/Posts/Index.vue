@@ -18,8 +18,8 @@
                             <tbody>
                                 <tr v-for="post in posts" v-bind:key="post.id">
                                     <td>{{ post.title }}</td>
-                                    <td>{{ post.body }}</td>
-                                    <td>{{ post.created_at }}</td>
+                                    <td>{{ post.body.substring(0, 50) }}</td>
+                                    <td>{{ post.created }}</td>
                                     <td></td>
                                 </tr>
 
@@ -41,7 +41,7 @@
         },
         mounted() {
             axios.get('/api/posts').then(response => {
-                this.posts = response.data;
+                this.posts = response.data.data;
             });
         }
     }
