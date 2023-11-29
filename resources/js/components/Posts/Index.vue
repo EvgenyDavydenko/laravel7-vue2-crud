@@ -16,7 +16,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="post in posts" v-bind:key="post.id">
+                                <tr v-for="post in posts.data" :key="post.id">
                                     <td>{{ post.title }}</td>
                                     <td>{{ post.body.substring(0, 50) }}</td>
                                     <td>{{ post.created }}</td>
@@ -25,6 +25,7 @@
 
                             </tbody>
                         </table>
+                        <pagination :data="posts" @pagination-change-page="getResults"></pagination>
                     </div>
                 </div>
             </div>
@@ -36,13 +37,20 @@
     export default {
         data() {
             return {
-                posts: []
+                posts: {}
             }
         },
         mounted() {
-            axios.get('/api/posts').then(response => {
-                this.posts = response.data.data;
-            });
+            this.getResults();
+        },
+        methods: {
+            // Our method to GET results from a Laravel endpoint
+            getResults(page = 1) {
+                axios.get('/api/posts?page=' + page)
+                    .then(response => {
+                        this.posts = response.data;
+                    });
+            }
         }
     }
 </script>
