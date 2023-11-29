@@ -1928,19 +1928,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      posts: {}
+      posts: {},
+      categories: {},
+      category_id: ''
     };
   },
   mounted: function mounted() {
+    var _this = this;
+    axios.get('/api/categories').then(function (response) {
+      _this.categories = response.data.data;
+    });
     this.getResults();
+  },
+  watch: {
+    category_id: function category_id(value) {
+      this.getResults();
+    }
   },
   methods: {
     // Our method to GET results from a Laravel endpoint
     getResults: function getResults() {
-      var _this = this;
+      var _this2 = this;
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get('/api/posts?page=' + page).then(function (response) {
-        _this.posts = response.data;
+      axios.get('/api/posts?page=' + page + '&category_id=' + this.category_id).then(function (response) {
+        _this2.posts = response.data;
       });
     }
   }
@@ -2010,7 +2021,37 @@ var render = function render() {
     staticClass: "card"
   }, [_c("div", {
     staticClass: "card-header"
-  }, [_vm._v("Posts Component")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Posts Component\n                    "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.category_id,
+      expression: "category_id"
+    }],
+    staticClass: "form-control col-md-3 float-right",
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.category_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("-- choose category --")]), _vm._v(" "), _vm._l(_vm.categories, function (category) {
+    return _c("option", {
+      key: category.id,
+      domProps: {
+        value: category.id
+      }
+    }, [_vm._v("\n                            " + _vm._s(category.name) + "\n                        ")]);
+  })], 2)]), _vm._v(" "), _c("div", {
     staticClass: "card-body"
   }, [_c("table", {
     staticClass: "table"

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\PostResource;
-use App\Models\Post;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::when(request('category_id', '')!= '', function($query){
-            $query->where('category_id', request('category_id'));
-        })->paginate(3);
-        return PostResource::collection($posts);
+        return CategoryResource::collection(Category::all());
     }
 
     /**

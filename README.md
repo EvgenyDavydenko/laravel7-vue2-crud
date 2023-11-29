@@ -5,3 +5,4 @@
 3.  simple mvc for `posts` table
 4.  resource for read data
 5.  add pagination
+6.  Table Filtering with Dropdowns
