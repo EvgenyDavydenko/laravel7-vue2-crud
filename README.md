@@ -6,3 +6,4 @@
 4.  resource for read data
 5.  add pagination
 6.  Table Filtering with Dropdowns
+7.  vue-router

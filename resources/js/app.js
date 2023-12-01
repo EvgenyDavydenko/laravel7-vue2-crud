@@ -6,7 +6,29 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+Vue.use(VueRouter)
+
+import App from './components/AppComponent.vue'
+import PostIndex from './components/Posts/Index.vue'
+import PostCreate from './components/Posts/Create.vue'
+
+const router = new VueRouter({
+    mode: 'history',
+    routes: [
+        {
+            path: '/',
+            component: PostIndex,
+            name: 'posts.index'
+        },
+        {
+            path: '/posts/create',
+            component: PostCreate,
+            name: 'posts.create'
+        },
+    ]
+})
 
 /**
  * The following block of code may be used to automatically register your
@@ -20,7 +42,6 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('posts-index', require('./components/Posts/Index.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 
 /**
@@ -31,4 +52,6 @@ Vue.component('pagination', require('laravel-vue-pagination'));
 
 const app = new Vue({
     el: '#app',
+    components: { App },
+    router
 });
